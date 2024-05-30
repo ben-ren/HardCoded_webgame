@@ -8,10 +8,8 @@ class Tank{
         this.spriteHeight = 246;
         this.maxFrame = 2;
         this.frame = 0;
-        this.frameX = 0;
-        this.frameY = 0;
-        this.animXArray = this.animations.animationList.tank[2].X;
-        this.animYArray = this.animations.animationList.tank[2].Y;
+        this.frameTreads = 0;
+        this.frameGun = 0;
         this.animationState = 0;
 
         this.frameInterval = 10; // Interval in milliseconds
@@ -21,8 +19,8 @@ class Tank{
     update(ctx, x, y, sX, sY, deltaTime){
         if(this.frameTimer > this.frameInterval){
             if(this.frame < this.maxFrame){
-                //this.frameX = this.animations.animationList.tank[2].X[this.frame];
-                this.frameY = this.animations.animationList.tank[2].Y[this.frame];
+                this.frameTreads = this.animations.animationList.tank[this.animationState].treads[this.frame];
+                this.frameGun = this.animations.animationList.tank[this.animationState].gun[this.frame];
                 this.frame++;
             }else{
                 this.frame = 0;
@@ -31,30 +29,50 @@ class Tank{
         }else{
             this.frameTimer += deltaTime;
         }
+        this.AnimationHandler();
         this.draw(ctx, x, y, sX, sY);
     }
 
     draw(ctx, x, y, scaleX, scaleY){
         ctx.drawImage(this.objectImage, 1 * this.spriteWidth, 
-            0 * this.spriteHeight, this.spriteWidth, 
+            this.frameGun * this.spriteHeight, this.spriteWidth, 
             this.spriteHeight, 
             x, y, 
             this.spriteWidth*scaleX, this.spriteHeight*scaleY);
-        ctx.drawImage(this.objectImage, this.frameX * this.spriteWidth, 
-            this.frameY * this.spriteHeight, this.spriteWidth, 
+        ctx.drawImage(this.objectImage, 0 * this.spriteWidth, 
+            this.frameTreads * this.spriteHeight, this.spriteWidth, 
             this.spriteHeight, 
             x, y, 
             this.spriteWidth*scaleX, this.spriteHeight*scaleY);
     }
 
+    //Determine's which tank animations are being run
     AnimationHandler(){
-        //conditional for shooting
-            //update animationState and maxFrame
-        //conditional for not shooting
-            //update animationState and maxFrame
-        //conditional for stationary
-            //update animationState and maxFrame
-        //conditional for moving
-            //update animationState and maxFrame
+        var drive = true;
+        var shoot = false;
+        let state = (drive ? 2 : 0) + (shoot ? 1 : 0);
+
+        switch(state){
+            case 0:
+                console.log("nothing");
+                this.animationState = 0;
+                this.maxFrame = 1;
+                break;
+            case 1:
+                console.log("shoot");
+                this.animationState = 1;
+                this.maxFrame = 4;
+                break;
+            case 2:
+                console.log("drive");
+                this.animationState = 2;
+                this.maxFrame = 2;
+                break;
+            case 3:
+                console.log("run and gun");
+                this.animationState = 3;
+                this.maxFrame = 4;
+                break; 
+       }
     }
 }
