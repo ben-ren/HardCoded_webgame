@@ -1,4 +1,5 @@
 // https://www.youtube.com/watch?v=GFO_txvwK_c
+/** @type {HTMLCanvasElement} */
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d'); //could also parse in 'webgl'
 const CANVAS_WIDTH = canvas.width = 1200;
@@ -9,19 +10,17 @@ let gamespeed = 20;
 const staggerFrames = 5;
 
 //objects
-const player = new Player();
+const player = new Player(0,0);
 const background = new Background(gamespeed);
-const dragonfly = new Dragonfly();
-const tank = new Tank();
+const dragonfly = new Dragonfly(100, 100);
+const tank = new Tank(700, 450);
 
-function animate(){
-    
-    if(gameFrame % staggerFrames === 0){
+function animate(){if(gameFrame % staggerFrames === 0){
         ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
         background.LoadLayers(ctx, gamespeed);
-        player.update(ctx, 0, 0, 3, 3, 200);
-        dragonfly.update(ctx, 100, 100, .5, .5, 90);
-        tank.update(ctx, 700, 450, .5, .5, 30);
+        player.update(ctx, 3, 3, 200);
+        dragonfly.update(ctx, .5, .5, 90);
+        tank.update(ctx, .5, .5, 30);
     }
 
     gameFrame++;

@@ -3,8 +3,10 @@ class Player{
     input = new InputManager();
     animations = new AnimationsList();
     
-    constructor(){
+    constructor(x, y){
         this.objectImage.src = 'sprites/Character_SpriteSheet_Reallign.png';
+        this.Xpos = x;
+        this.Ypos = y;
         this.spriteWidth = 42;
         this.spriteHeight = 42;
         this.maxFrame = 6;
@@ -21,8 +23,14 @@ class Player{
         this.frameTimer = 0;
     }
 
-    update(ctx, x, y, sX, sY, deltaTime){
+    update(ctx, sX, sY, deltaTime){
         this.input.update();
+        this.FrameStateAnimator(deltaTime);
+        this.AnimationHandler();
+        this.draw(ctx, this.Xpos, this.Ypos, sX, sY)
+    }
+
+    FrameStateAnimator(deltaTime){
         if(this.frameTimer > this.frameInterval){
             if(this.frame < this.maxFrame){
                 this.frameX = this.animations.animationList.player[this.animationState].X[this.frame];
@@ -35,8 +43,6 @@ class Player{
         }else{
             this.frameTimer += deltaTime;
         }
-        this.AnimationHandler();
-        this.draw(ctx, x, y, sX, sY)
     }
 
     AnimationHandler(){
@@ -47,12 +53,16 @@ class Player{
         } else if (this.input.up) {
             this.animationState = 4; // Jumping animation state
             this.maxFrame = 1;
+            this.inAir = true;
         } else if (this.input.right) {
             this.animationState = 2; // Sliding animation state
             this.maxFrame = 6;
         } else {
             this.animationState = 0;
             this.maxFrame = 1;
+        }
+        if(!this.input.up){
+            this.inAir = false;
         }
     }
 
