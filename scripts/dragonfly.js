@@ -2,10 +2,11 @@ class Dragonfly{
     objectImage = new Image();
     animations = new AnimationsList();
 
-    constructor(x, y){
+    constructor(x, y, scale, speed){
         this.objectImage.src = 'sprites/dragonfly_spritesheet.png';
         this.Xpos = x;
         this.Ypos = y;
+        this.scale = scale
         this.spriteWidth = 333;
         this.spriteHeight = 300;
         this.maxFrame = 4;
@@ -16,11 +17,14 @@ class Dragonfly{
 
         this.frameInterval = 10; // Interval in milliseconds
         this.frameTimer = 0;
+        this.speed = speed;
     }
 
-    update(ctx, sX, sY, deltaTime){
+    update(ctx, deltaTime){
+        this.Xpos += Math.random() * 5 - (this.speed);
+        this.Ypos += Math.random() * 3 - 1.5;
         this.FrameStateAnimator(deltaTime);
-        this.draw(ctx, this.Xpos, this.Ypos, sX, sY);
+        this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);
     }
 
     FrameStateAnimator(deltaTime){

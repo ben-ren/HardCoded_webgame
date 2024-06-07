@@ -10,21 +10,29 @@ let gamespeed = 20;
 const staggerFrames = 5;
 
 //objects
-const player = new Player(0,0);
+const player = new Player(0,0,3);
 const background = new Background(gamespeed);
-const dragonfly = new Dragonfly(100, 100);
-const tank = new Tank(700, 450);
+const dragonflySpawner = new EntitySpawner(
+    10, [0, 800], [0, 300], Dragonfly, 0, 0, .3, 2
+);
+const tankSpawner = new EntitySpawner(
+    3, [400, 900], [450,450], Tank, 0, 0, .4, 0
+);
 
 function animate(){if(gameFrame % staggerFrames === 0){
         ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
         background.LoadLayers(ctx, gamespeed);
-        player.update(ctx, 3, 3, 200);
-        dragonfly.update(ctx, .5, .5, 90);
-        tank.update(ctx, .5, .5, 30);
+        player.update(ctx, 200);
+        dragonflySpawner.update(ctx, 90);
+        tankSpawner.update(ctx, 30);
     }
 
     gameFrame++;
     requestAnimationFrame(animate);
+}
+
+function randomInRange(min, max){
+    return Math.random() * (max - min) + min;
 }
 
 // May need to create load function if hosting on a web sever

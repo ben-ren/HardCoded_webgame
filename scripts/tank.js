@@ -2,10 +2,11 @@ class Tank{
     objectImage = new Image();
     animations = new AnimationsList();
 
-    constructor(x, y){
+    constructor(x, y, scale, speed){
         this.objectImage.src = 'sprites/Tank_spritesheet.png';
         this.Xpos = x;
         this.Ypos = y;
+        this.scale = scale
         this.spriteWidth = 780;
         this.spriteHeight = 246;
         this.maxFrame = 2;
@@ -18,10 +19,10 @@ class Tank{
         this.frameTimer = 0;
     }
 
-    update(ctx, sX, sY, deltaTime){
+    update(ctx, deltaTime){
         this.FrameStateAnimator(deltaTime);
         this.AnimationHandler();
-        this.draw(ctx, this.Xpos, this.Ypos, sX, sY);
+        this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);
     }
 
     FrameStateAnimator(deltaTime){

@@ -3,10 +3,11 @@ class Player{
     input = new InputManager();
     animations = new AnimationsList();
     
-    constructor(x, y){
+    constructor(x, y, scale, speed){
         this.objectImage.src = 'sprites/Character_SpriteSheet_Reallign.png';
         this.Xpos = x;
         this.Ypos = y;
+        this.scale = scale
         this.spriteWidth = 42;
         this.spriteHeight = 42;
         this.maxFrame = 6;
@@ -23,11 +24,11 @@ class Player{
         this.frameTimer = 0;
     }
 
-    update(ctx, sX, sY, deltaTime){
+    update(ctx, deltaTime){
         this.input.update();
         this.FrameStateAnimator(deltaTime);
         this.AnimationHandler();
-        this.draw(ctx, this.Xpos, this.Ypos, sX, sY)
+        this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale)
     }
 
     FrameStateAnimator(deltaTime){
