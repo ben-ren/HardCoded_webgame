@@ -1,8 +1,9 @@
-class Tank{
+class Tank extends Collider{
     objectImage = new Image();
     animations = new AnimationsList();
 
     constructor(x, y, scale, speed){
+        super();
         this.objectImage.src = 'sprites/Tank_spritesheet.png';
         this.Xpos = x;
         this.Ypos = y;
@@ -17,9 +18,11 @@ class Tank{
 
         this.frameInterval = 10; // Interval in milliseconds
         this.frameTimer = 0;
+        this.speed = speed;
     }
 
     update(ctx, deltaTime){
+        this.Xpos -= this.speed;
         this.FrameStateAnimator(deltaTime);
         this.AnimationHandler();
         this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);

@@ -1,15 +1,20 @@
-class Dragonfly extends Collider{
+class GameObject extends Collider{
     objectImage = new Image();
-    animations = new AnimationsList();
 
-    constructor(x, y, scale, speed){
+    constructor(URL, animationArray, x, y, scale, speed){
         super();
-        this.objectImage.src = 'sprites/dragonfly_spritesheet.png';
+        this.objectImage.src = URL;
+        this.imageLoaded = false; // Track if the image is loaded
+        this.objectImage.onload = () => {
+            this.imageLoaded = true;
+        };
         this.Xpos = x;
         this.Ypos = y;
         this.scale = scale
-        this.spriteWidth = 333;
-        this.spriteHeight = 300;
+
+        this.animationArray = animationArray;
+        this.spriteWidth = 100;
+        this.spriteHeight = 100;
         this.maxFrame = 4;
         this.frame = 0;
         this.frameX = 0;
@@ -22,17 +27,19 @@ class Dragonfly extends Collider{
     }
 
     update(ctx, deltaTime){
-        this.Xpos += Math.random() * 5 - (this.speed);
-        this.Ypos += Math.random() * 3 - 1.5;
-        this.FrameStateAnimator(deltaTime);
-        this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);
+        // this.Xpos += Math.random() * 5 - (this.speed);
+        // this.Ypos += Math.random() * 3 - 1.5;
+        this.FrameStateAnimator(this.animationArray, deltaTime);
+        if (this.imageLoaded) {
+            this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);
+        }
     }
 
-    FrameStateAnimator(deltaTime){
+    FrameStateAnimator(animationArray, deltaTime){
         if(this.frameTimer > this.frameInterval){
             if(this.frame < this.maxFrame){
-                this.frameX = this.animations.animationList.dragonfly[this.animationState].X[this.frame];
-                this.frameY = this.animations.animationList.dragonfly[this.animationState].Y[this.frame];
+                this.frameX = animationArray[this.animationState].X[this.frame];
+                this.frameY = animationArray[this.animationState].Y[this.frame];
                 this.frame++;
             }else{
                 this.frame = 0;

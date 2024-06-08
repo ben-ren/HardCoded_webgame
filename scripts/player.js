@@ -1,9 +1,10 @@
-class Player{
+class Player extends Collider{
     objectImage = new Image();
     input = new InputManager();
     animations = new AnimationsList();
     
     constructor(x, y, scale, speed){
+        super();
         this.objectImage.src = 'sprites/Character_SpriteSheet_Reallign.png';
         this.Xpos = x;
         this.Ypos = y;

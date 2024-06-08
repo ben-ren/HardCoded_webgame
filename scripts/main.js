@@ -9,14 +9,18 @@ let gameFrame = 0;
 let gamespeed = 20;
 const staggerFrames = 5;
 
+const explosions = [];
+
 //objects
+const animations = new AnimationsList();
+const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
 const player = new Player(0,0,3);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    10, [0, 800], [0, 300], Dragonfly, 0, 0, .3, 2
+    10, [200, 1000], [0, 300], Dragonfly, 0, 0, .3, 2.5
 );
 const tankSpawner = new EntitySpawner(
-    3, [400, 900], [450,450], Tank, 0, 0, .4, 0
+    4, [900, 3000], [450,450], Tank, 0, 0, .4, 4
 );
 
 function animate(){if(gameFrame % staggerFrames === 0){
@@ -25,14 +29,11 @@ function animate(){if(gameFrame % staggerFrames === 0){
         player.update(ctx, 200);
         dragonflySpawner.update(ctx, 90);
         tankSpawner.update(ctx, 30);
+        gameobject.update(ctx, 30);
     }
 
     gameFrame++;
     requestAnimationFrame(animate);
-}
-
-function randomInRange(min, max){
-    return Math.random() * (max - min) + min;
 }
 
 // May need to create load function if hosting on a web sever

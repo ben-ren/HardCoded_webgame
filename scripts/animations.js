@@ -24,6 +24,9 @@ class AnimationsList{
                 {"name": "drive", "treads": [0, 1], "gun": [0, 0]},
                 {"name": "run_and_gun", "treads": [0, 1, 0, 1], "gun": [0, 1, 2, 1]},
             ],
+            puff: [
+                {"name": "puff", "X": [0, 1, 2, 3, 4], "Y": [0, 0, 0, 0, 0]}
+            ],
         }
     }
 
