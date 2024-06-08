@@ -13,14 +13,14 @@ const explosions = [];
 
 //objects
 const animations = new AnimationsList();
-const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(0,0,3);
+//const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
+const player = new Player(animations, 0, 0, 3, 1);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    10, [200, 1000], [0, 300], Dragonfly, 0, 0, .3, 2.5
+    10, [200, 1000], [0, 300], Dragonfly, animations, 0, 0, .3, 2.5
 );
 const tankSpawner = new EntitySpawner(
-    4, [900, 3000], [450,450], Tank, 0, 0, .4, 4
+    4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2
 );
 
 function animate(){if(gameFrame % staggerFrames === 0){
@@ -29,7 +29,6 @@ function animate(){if(gameFrame % staggerFrames === 0){
         player.update(ctx, 200);
         dragonflySpawner.update(ctx, 90);
         tankSpawner.update(ctx, 30);
-        gameobject.update(ctx, 30);
     }
 
     gameFrame++;

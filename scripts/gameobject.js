@@ -27,19 +27,17 @@ class GameObject extends Collider{
     }
 
     update(ctx, deltaTime){
-        // this.Xpos += Math.random() * 5 - (this.speed);
-        // this.Ypos += Math.random() * 3 - 1.5;
-        this.FrameStateAnimator(this.animationArray, deltaTime);
+        this.FrameStateAnimator(deltaTime);
         if (this.imageLoaded) {
             this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);
         }
     }
 
-    FrameStateAnimator(animationArray, deltaTime){
+    FrameStateAnimator(deltaTime){
         if(this.frameTimer > this.frameInterval){
             if(this.frame < this.maxFrame){
-                this.frameX = animationArray[this.animationState].X[this.frame];
-                this.frameY = animationArray[this.animationState].Y[this.frame];
+                this.frameX = this.animationArray[this.animationState].X[this.frame];
+                this.frameY = this.animationArray[this.animationState].Y[this.frame];
                 this.frame++;
             }else{
                 this.frame = 0;
@@ -50,6 +48,11 @@ class GameObject extends Collider{
         }
     }
 
+    /*
+        ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+        sx, sy is the cutout position from top-right corner. 
+        sw, sh is the height and width of the cutout.
+    */
     draw(ctx, x, y, scaleX, scaleY){
         ctx.drawImage(this.objectImage, this.frameX * this.spriteWidth, 
         this.frameY * this.spriteHeight, this.spriteWidth, 

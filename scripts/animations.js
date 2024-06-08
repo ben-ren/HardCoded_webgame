@@ -19,10 +19,10 @@ class AnimationsList{
                 {"name": "fly", "X": [1, 2, 1, 0], "Y": [0, 0, 0, 0]}
             ],
             tank: [
-                {"name": "stationary", "treads": [0], "gun": [0]},
-                {"name": "shoot", "treads": [0, 0, 0, 0], "gun": [0, 1, 2, 1]},
-                {"name": "drive", "treads": [0, 1], "gun": [0, 0]},
-                {"name": "run_and_gun", "treads": [0, 1, 0, 1], "gun": [0, 1, 2, 1]},
+                {"name": "stationary", "X": [0], "Y": [0]},
+                {"name": "shoot", "X": [0, 0, 0, 0], "Y": [0, 1, 2, 1]},
+                {"name": "drive", "X": [0, 1], "Y": [0, 0]},
+                {"name": "run_and_gun", "X": [0, 1, 0, 1], "Y": [0, 1, 2, 1]},
             ],
             puff: [
                 {"name": "puff", "X": [0, 1, 2, 3, 4], "Y": [0, 0, 0, 0, 0]}

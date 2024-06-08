@@ -1,50 +1,26 @@
-class Player extends Collider{
-    objectImage = new Image();
+class Player extends GameObject{
     input = new InputManager();
-    animations = new AnimationsList();
     
-    constructor(x, y, scale, speed){
-        super();
-        this.objectImage.src = 'sprites/Character_SpriteSheet_Reallign.png';
-        this.Xpos = x;
-        this.Ypos = y;
-        this.scale = scale
+    constructor(animations, x, y, scale, speed){
+        const URL = 'sprites/Character_SpriteSheet_Reallign.png';
+        const animationArray = animations.animationList.player;
+        super(URL, animationArray, x, y, scale, speed);
+
         this.spriteWidth = 42;
         this.spriteHeight = 42;
         this.maxFrame = 6;
-        this.frame = 0;
-        this.frameX = 0;
-        this.frameY = 0;
-        this.animationState = 0;
 
         this.onLadder = false;
         this.shoot = false;
         this.inAir = false;
 
         this.frameInterval = 200; // Interval in milliseconds for player
-        this.frameTimer = 0;
     }
 
     update(ctx, deltaTime){
         this.input.update();
-        this.FrameStateAnimator(deltaTime);
         this.AnimationHandler();
-        this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale)
-    }
-
-    FrameStateAnimator(deltaTime){
-        if(this.frameTimer > this.frameInterval){
-            if(this.frame < this.maxFrame){
-                this.frameX = this.animations.animationList.player[this.animationState].X[this.frame];
-                this.frameY = this.animations.animationList.player[this.animationState].Y[this.frame];
-                this.frame++;
-            }else{
-                this.frame = 0;
-            }
-            this.frameTimer = 0;
-        }else{
-            this.frameTimer += deltaTime;
-        }
+        super.update(ctx, deltaTime);
     }
 
     AnimationHandler(){
@@ -66,18 +42,5 @@ class Player extends Collider{
         if(!this.input.up){
             this.inAir = false;
         }
-    }
-
-    /*
-        ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
-        sx, sy is the cutout position from top-right corner. 
-        sw, sh is the height and width of the cutout.
-    */
-    draw(ctx, x, y, scaleX, scaleY){
-        ctx.drawImage(this.objectImage, this.frameX * this.spriteWidth, 
-        this.frameY * this.spriteHeight, this.spriteWidth, 
-        this.spriteHeight, 
-        x, y, 
-        this.spriteWidth*scaleX, this.spriteHeight*scaleY);
     }
 }

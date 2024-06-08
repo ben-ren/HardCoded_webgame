@@ -1,56 +1,28 @@
-class Tank extends Collider{
-    objectImage = new Image();
-    animations = new AnimationsList();
-
-    constructor(x, y, scale, speed){
-        super();
-        this.objectImage.src = 'sprites/Tank_spritesheet.png';
-        this.Xpos = x;
-        this.Ypos = y;
-        this.scale = scale
+class Tank extends GameObject{
+    constructor(animations, x, y, scale, speed){
+        const URL = 'sprites/Tank_spritesheet.png';
+        const animationArray = animations.animationList.tank;
+        super(URL, animationArray, x, y, scale, speed);
+        
         this.spriteWidth = 780;
         this.spriteHeight = 246;
         this.maxFrame = 2;
-        this.frame = 0;
-        this.frameTreads = 0;
-        this.frameGun = 0;
-        this.animationState = 0;
-
-        this.frameInterval = 10; // Interval in milliseconds
-        this.frameTimer = 0;
-        this.speed = speed;
     }
 
     update(ctx, deltaTime){
         this.Xpos -= this.speed;
-        this.FrameStateAnimator(deltaTime);
+        super.update(ctx, deltaTime);
         this.AnimationHandler();
-        this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);
-    }
-
-    FrameStateAnimator(deltaTime){
-        if(this.frameTimer > this.frameInterval){
-            if(this.frame < this.maxFrame){
-                this.frameTreads = this.animations.animationList.tank[this.animationState].treads[this.frame];
-                this.frameGun = this.animations.animationList.tank[this.animationState].gun[this.frame];
-                this.frame++;
-            }else{
-                this.frame = 0;
-            }
-            this.frameTimer = 0;
-        }else{
-            this.frameTimer += deltaTime;
-        }
     }
 
     draw(ctx, x, y, scaleX, scaleY){
         ctx.drawImage(this.objectImage, 1 * this.spriteWidth, 
-            this.frameGun * this.spriteHeight, this.spriteWidth, 
+            this.frameY * this.spriteHeight, this.spriteWidth, 
             this.spriteHeight, 
             x, y, 
             this.spriteWidth*scaleX, this.spriteHeight*scaleY);
         ctx.drawImage(this.objectImage, 0 * this.spriteWidth, 
-            this.frameTreads * this.spriteHeight, this.spriteWidth, 
+            this.frameX * this.spriteHeight, this.spriteWidth, 
             this.spriteHeight, 
             x, y, 
             this.spriteWidth*scaleX, this.spriteHeight*scaleY);
