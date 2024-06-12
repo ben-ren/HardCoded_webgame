@@ -1,12 +1,13 @@
-class Tank extends GameObject{
-    constructor(animations, x, y, scale, speed){
+class Tank extends Collider{
+    constructor(animations, x, y, scale, speed, collider_width, collider_height){
         const URL = 'sprites/Tank_spritesheet.png';
         const animationArray = animations.animationList.tank;
-        super(URL, animationArray, x, y, scale, speed);
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height);
         
         this.spriteWidth = 780;
         this.spriteHeight = 246;
         this.maxFrame = 2;
+        
     }
 
     update(ctx, deltaTime){

@@ -15,13 +15,13 @@ const animations = new AnimationsList();
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(animations, 0, 0, 3, 1);
+const player = new Player(animations, 0, 400, 3, 1, 100, 100);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    10, [200, 1000], [0, 300], Dragonfly, animations, 0, 0, .3, 2.5
+    10, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 300
 );
 const tankSpawner = new EntitySpawner(
-    4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2
+    4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 780, 246
 );
 
 function animate(){
@@ -37,6 +37,7 @@ function animate(){
             //delete's explosion object after reaching end of animation.
             if(explosions[i].frame == explosions[i].maxFrame){
                 explosions.splice(i, 1);
+                i--;
             }
         }
     }
@@ -45,14 +46,14 @@ function animate(){
     requestAnimationFrame(animate);
 }
 
-//move math to Explosions class
-function clicker(){
-    window.addEventListener('click', (e) => {
-        const size =  50;
-        const xPos = (e.x - canvasPosition.left) - size/2
-        const yPos = (e.y - canvasPosition.top) - size/2
-        explosions.push(new Explosion(xPos, yPos));
-    });
+window.addEventListener('click', (e) => {
+    createAnimation(e.x, e.y, 50);
+})
+
+function createAnimation(x, y, size){
+    const xPos = (x - canvasPosition.left) - size/2
+    const yPos = (y - canvasPosition.top) - size/2
+    explosions.push(new Explosion(xPos, yPos));
 }
 
 
@@ -68,6 +69,5 @@ window.addEventListener('load', function(){
         showGameSpeed.innerHTML = e.target.value;
     });
 
-    clicker();
     animate();  //runs animation
 });

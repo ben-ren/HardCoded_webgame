@@ -1,8 +1,7 @@
-class GameObject extends Collider{
+class GameObject{
     objectImage = new Image();
 
     constructor(URL, animationArray, x, y, scale, speed){
-        super();
         this.objectImage.src = URL;
         this.imageLoaded = false; // Track if the image is loaded
         this.objectImage.onload = () => {
@@ -11,6 +10,7 @@ class GameObject extends Collider{
         this.Xpos = x;
         this.Ypos = y;
         this.scale = scale
+        this.speed = speed;
 
         this.animationArray = animationArray;
         this.spriteWidth = 100;
@@ -23,7 +23,6 @@ class GameObject extends Collider{
 
         this.frameInterval = 10; // Interval in milliseconds
         this.frameTimer = 0;
-        this.speed = speed;
     }
 
     update(ctx, deltaTime){

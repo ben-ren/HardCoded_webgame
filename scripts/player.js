@@ -1,10 +1,10 @@
-class Player extends GameObject{
+class Player extends Collider{
     input = new InputManager();
     
-    constructor(animations, x, y, scale, speed){
+    constructor(animations, x, y, scale, speed, collider_width, collider_height){
         const URL = 'sprites/Character_SpriteSheet_Reallign.png';
         const animationArray = animations.animationList.player;
-        super(URL, animationArray, x, y, scale, speed);
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height);
 
         this.spriteWidth = 42;
         this.spriteHeight = 42;
