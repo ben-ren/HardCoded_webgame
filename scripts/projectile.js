@@ -10,6 +10,7 @@ class Projectile extends Collider{
     }
 
     update(ctx, deltaTime){
+        this.Xpos += this.speed;
         super.update(ctx, deltaTime);
     }
 }

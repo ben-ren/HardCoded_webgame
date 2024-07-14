@@ -24,16 +24,13 @@ const tankSpawner = new EntitySpawner(
     4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 780, 246
 );
 
-const rocket = new Projectile(animations, 0, 0, 1, 1, 50, 20);
-
 function animate(){
     if(gameFrame % staggerFrames === 0){
         ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
         background.LoadLayers(ctx, gamespeed);
-        player.update(ctx, 200);
+        player.update(ctx, CANVAS_WIDTH, 200);
         dragonflySpawner.update(ctx, 90);
         tankSpawner.update(ctx, 30);
-        rocket.update(ctx, 20);
         //loops through stored explosions as they happen.
         for(let i = 0; i< explosions.length; i++){
             explosions[i].update(ctx, 20);
@@ -58,7 +55,6 @@ function createAnimation(x, y, size){
     const yPos = (y - canvasPosition.top) - size/2
     explosions.push(new Explosion(xPos, yPos));
 }
-
 
 // May need to create load function if hosting on a web sever
 window.addEventListener('load', function(){
