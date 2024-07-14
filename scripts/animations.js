@@ -27,6 +27,9 @@ class AnimationsList{
             puff: [
                 {"name": "puff", "X": [0, 1, 2, 3, 4], "Y": [0, 0, 0, 0, 0]}
             ],
+            rocket: [
+                {"name": "fly", "X": [0, 1, 2, 1], "Y": [0, 0, 0, 0]}
+            ],
         }
     }
 
