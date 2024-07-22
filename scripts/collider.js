@@ -1,8 +1,9 @@
 class Collider extends GameObject{
-    constructor(URL, animationArray, x, y, scale, speed, width, height){
+    constructor(URL, animationArray, x, y, scale, speed, width, height, colliderFlag){
         super(URL, animationArray, x, y, scale, speed);
         this.w = width;
         this.h = height;
+        this.colliderFlag = colliderFlag;
     }
 
     //parse in current object's position & dimensions

@@ -15,7 +15,7 @@ const animations = new AnimationsList();
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(animations, 0, 400, 3, 1, 100, 100);
+const player = new Player(animations, 0, 200, 3, 20, 100, 100);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
     10, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 300

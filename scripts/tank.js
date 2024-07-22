@@ -2,7 +2,7 @@ class Tank extends Collider{
     constructor(animations, x, y, scale, speed, collider_width, collider_height){
         const URL = 'sprites/Tank_spritesheet.png';
         const animationArray = animations.animationList.tank;
-        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height);
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "tank");
         
         this.spriteWidth = 780;
         this.spriteHeight = 246;
