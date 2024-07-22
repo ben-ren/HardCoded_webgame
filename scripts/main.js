@@ -19,10 +19,10 @@ const explosions = [];
 const player = new Player(animations, 0, 400, 3, 15, 30, 42);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    10, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 200
+    6, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 200
 );
 const tankSpawner = new EntitySpawner(
-    4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 520, 246
+    3, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 520, 246
 );
 
 //Store all objects that inherit from Collider into physicsObject array
@@ -54,6 +54,9 @@ function animate(){
                 }
             }
         }
+
+        //remove destroyed objects
+        removeDestroyedObjects();
     }
 
     gameFrame++;
@@ -65,10 +68,45 @@ function collisionLogic(index1, index2){
     const obj1 = physicsObjects[index1];
     const obj2 = physicsObjects[index2];
 
-    if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "projectile")){
+    if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "rocket")){
         console.log("player hit");
     }
-    //console.log(`Collision detected between ${physicsObjects[i].colliderFlag} and ${physicsObjects[j].colliderFlag}`);
+    if(obj2.colliderFlag === "rocket" && (
+        obj1.colliderFlag === "tank" || obj1.colliderFlag === "dragonfly"
+    )){
+        console.log(`destroy ${obj2.colliderFlag} & ${obj1.colliderFlag}`);
+        //splice rocket and collision target
+        obj1.destroyed = true;
+        obj2.destroyed = true;
+    }
+    //console.log(`Collision detected between ${obj1.colliderFlag} and ${obj2.colliderFlag}`);
+}
+
+//centralized rmoval function
+function removeDestroyedObjects() {
+    // Remove from physicsObjects array
+    for (let i = physicsObjects.length - 1; i >= 0; i--) {
+        if (physicsObjects[i].destroyed) {
+            // Remove from physicsObjects
+            physicsObjects.splice(i, 1);
+        }
+    }
+
+    // Remove from dragonflySpawner.enemiesArray
+    for (let i = dragonflySpawner.enemiesArray.length - 1; i >= 0; i--) {
+        if (dragonflySpawner.enemiesArray[i].destroyed) {
+            // Remove from dragonflySpawner.enemiesArray
+            dragonflySpawner.enemiesArray.splice(i, 1);
+        }
+    }
+
+    // Remove from tankSpawner.enemiesArray
+    for (let i = tankSpawner.enemiesArray.length - 1; i >= 0; i--) {
+        if (tankSpawner.enemiesArray[i].destroyed) {
+            // Remove from tankSpawner.enemiesArray
+            tankSpawner.enemiesArray.splice(i, 1);
+        }
+    }
 }
 
 window.addEventListener('click', (e) => {

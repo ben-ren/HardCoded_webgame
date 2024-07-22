@@ -23,9 +23,12 @@ class GameObject{
 
         this.frameInterval = 10; // Interval in milliseconds
         this.frameTimer = 0;
+        this.destroyed = false;
     }
 
     update(ctx, deltaTime){
+        if(this.destroyed) return;
+        
         this.FrameStateAnimator(deltaTime);
         if (this.imageLoaded) {
             this.draw(ctx, this.Xpos, this.Ypos, this.scale, this.scale);

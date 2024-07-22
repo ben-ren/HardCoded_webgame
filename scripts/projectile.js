@@ -2,7 +2,7 @@ class Projectile extends Collider{
     constructor(animations, x, y, scale, speed, collider_width, collider_height){
         const URL = 'sprites/rocket.png';
         const animationArray = animations.animationList.rocket;
-        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "projectile");
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "rocket");
 
         this.spriteWidth = 50;
         this.spriteHeight = 50;

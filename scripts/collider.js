@@ -9,7 +9,7 @@ class Collider extends GameObject{
     //parse in current object's position & dimensions
     update(ctx, speed){
         super.update(ctx, speed);
-        this.DrawBox(ctx);
+        //this.DrawBox(ctx);
     }
 
     InCollider(col){
