@@ -12,17 +12,23 @@ const staggerFrames = 5;
 
 //objects
 const animations = new AnimationsList();
+const physicsObjects = [];
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(animations, 0, 200, 3, 20, 100, 100);
+const player = new Player(animations, 0, 400, 3, 15, 30, 42);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    10, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 300
+    10, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 200
 );
 const tankSpawner = new EntitySpawner(
-    4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 780, 246
+    4, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 520, 246
 );
+
+//Store all objects that inherit from Collider into physicsObject array
+physicsObjects.push(player);
+dragonflySpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
+tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
 
 function animate(){
     if(gameFrame % staggerFrames === 0){
@@ -40,10 +46,29 @@ function animate(){
                 i--;
             }
         }
+        //loop through all physicsObjects and run update and collision check
+        for (let i = 0; i < physicsObjects.length; i++) {
+            for (let j = i + 1; j < physicsObjects.length; j++) {
+                if (physicsObjects[i].InCollider(physicsObjects[j])) {
+                    collisionLogic(i, j);
+                }
+            }
+        }
     }
 
     gameFrame++;
     requestAnimationFrame(animate);
+}
+
+// Handle collision logic here
+function collisionLogic(index1, index2){
+    const obj1 = physicsObjects[index1];
+    const obj2 = physicsObjects[index2];
+
+    if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "projectile")){
+        console.log("player hit");
+    }
+    //console.log(`Collision detected between ${physicsObjects[i].colliderFlag} and ${physicsObjects[j].colliderFlag}`);
 }
 
 window.addEventListener('click', (e) => {

@@ -1,39 +1,33 @@
 class Collider extends GameObject{
     constructor(URL, animationArray, x, y, scale, speed, width, height, colliderFlag){
         super(URL, animationArray, x, y, scale, speed);
-        this.w = width;
-        this.h = height;
+        this.w = width * scale;
+        this.h = height * scale;
         this.colliderFlag = colliderFlag;
     }
 
     //parse in current object's position & dimensions
     update(ctx, speed){
         super.update(ctx, speed);
+        this.DrawBox(ctx);
     }
 
     InCollider(col){
-        if(this.Xpos == col.Xpos || this.Ypos == col.Ypos){
-            return true;
+        // Check if one rectangle is to the left of the other
+        if (this.Xpos + this.w < col.Xpos || col.Xpos + col.w < this.Xpos) {
+            return false;
         }
-        let col_X_width = col.Xpos + col.w;
-        let col_Y_height = col.Ypos + col.h;
-        let this_X_width = this.Xpos + this.w;
-        let this_Y_height = this.Ypos + this.h;
-        let InX = false;
-        let InY = false;
-
-        let X_in_box = this.Xpos > col.Xpos && this.Xpos < col_X_width;
-        let width_in_box = this_X_width > col.Xpos && this_X_width < col_X_width;
-        let y_in_box = this.Ypos > col.Ypos && this.Ypos < col_Y_height;
-        let height_in_box = this_Y_height > col.Ypos && this_Y_height < col_Y_height;
-
-        if(X_in_box || width_in_box){
-            InX = true;
+        // Check if one rectangle is above the other
+        if (this.Ypos + this.h < col.Ypos || col.Ypos + col.h < this.Ypos) {
+            return false;
         }
-        if(y_in_box || height_in_box){
-            InY = true;
-        }
+        // If neither of the above, the rectangles must be intersecting
+        return true;
+    }
 
-        return InX && InY;
+    // Draw bounding box for debugging
+    DrawBox(ctx){
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(this.Xpos, this.Ypos, this.w, this.h);
     }
 }

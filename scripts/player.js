@@ -44,7 +44,7 @@ class Player extends Collider{
         }
         if(this.input.right && this.Xpos<limit){
             this.Xpos += this.speed;
-        }else if(this.input.left){
+        }else{
             this.Xpos -= this.speed;
         }
         if(this.Xpos < 0){
@@ -56,6 +56,7 @@ class Player extends Collider{
         for(let i=0; i<this.rockets.length; i++){
             this.rockets[i].update(ctx, 20);
             if(this.rockets[i].Xpos > range){
+                this.removeProjectile(this.rockets[i]);
                 this.rockets.splice(i, 1);
                 i--;
             }
@@ -64,9 +65,22 @@ class Player extends Collider{
 
     shootRockets() {
         if (this.input.shift && !this.shiftPressed) {
-            this.rockets.push(new Projectile(animations, this.Xpos+(this.spriteWidth*2), this.Ypos + (this.spriteHeight), 1, 20, 50, 50));
+            let newRocket = new Projectile(animations, this.Xpos+(this.spriteWidth*2), this.Ypos + (this.spriteHeight), 1, 20, 50, 50);
+            this.rockets.push(newRocket);
+            this.addProjectileToPhysicsObjects(newRocket);
         }
         this.shiftPressed = this.input.shift;
+    }
+
+    addProjectileToPhysicsObjects(projectile) {
+        physicsObjects.push(projectile);
+    }
+
+    removeProjectile(projectile) {
+        const index = physicsObjects.indexOf(projectile);
+        if (index > -1) {
+            physicsObjects.splice(index, 1);
+        }
     }
 
     AnimationHandler(){
