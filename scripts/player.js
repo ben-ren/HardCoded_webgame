@@ -3,7 +3,7 @@ class Player extends Collider{
     rockets = [];
     shiftPressed = false;
     
-    constructor(animations, x, y, scale, speed, collider_width, collider_height){
+    constructor(animations, x, y, scale, speed, collider_width, collider_height, gamespeed){
         const URL = 'sprites/Character_SpriteSheet_Reallign.png';
         const animationArray = animations.animationList.player;
         super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "player");
@@ -11,44 +11,66 @@ class Player extends Collider{
         this.spriteWidth = 42;
         this.spriteHeight = 42;
         this.maxFrame = 6;
+        this.gamespeed = gamespeed;
 
         this.onLadder = false;
         this.shoot = false;
         this.inAir = false;
-        this.jumpForce = this.speed*2;
+        this.jumpForce = this.speed;
+        this.jumpHeight = 15;
+        this.timer = this.jumpHeight;
+        this.groundHeightPosition = 420;
 
         this.frameInterval = 200; // Interval in milliseconds for player
     }
 
-    update(ctx, range, deltaTime){
+    update(ctx, range, deltaTime, gamespeed){
         this.input.update();
         this.movement(range-100);
         this.AnimationHandler();
         super.update(ctx, deltaTime);
         this.updateRocketStates(range);
         this.shootRockets();
+        this.gamespeed = gamespeed;
     }
 
     gravity(){
-        if(this.Ypos < 450){
-            this.Ypos+=9.8;
+        console.log(this.timer);
+        if(this.Ypos < this.groundHeightPosition && this.timer === 0){
+            this.Ypos+= (9.8 + this.timer);
         }else{
             this.inAir = false;
+        }
+        if(this.Ypos >= this.groundHeightPosition){
+            this.timer = this.jumpHeight;
+        }
+        if(!this.input.up){
+            this.timer = 0;
         }
     }
 
     movement(limit){
         this.gravity();
-        if(this.input.up){
-            this.Ypos -= this.jumpForce
+        if(this.input.up && this.timer > 0){
+            this.jump();
+            this.inAir = true;
         }
         if(this.input.right && this.Xpos<limit){
             this.Xpos += this.speed;
         }else{
-            this.Xpos -= this.speed;
+            //match backwards speed to pathway image scrollspeed (0.6 * gamespeed)
+            this.Xpos -= 0.6 * this.gamespeed;
         }
         if(this.Xpos < 0){
             this.Xpos = 0;
+        }
+    }
+
+    jump(){
+        //if !inAir start timer
+        if(!this.inAir){
+            this.Ypos -= (this.jumpForce + this.timer);    //apply jump force
+            this.timer--;                   //iterate timer down
         }
     }
 
@@ -84,22 +106,19 @@ class Player extends Collider{
     }
 
     AnimationHandler(){
-        if(this.input.up){
-            this.inAir = true;
-        }
         // Update animation state based on key inputs
         if (this.input.down) {
-            this.animationState = 6; // Running animation state
+            this.animationState = 6;    // Sliding animation state
             this.maxFrame = 1;
         } else if (this.inAir) {
-            this.animationState = 4; // Jumping animation state
+            this.animationState = 4;    // Jumping animation state
             this.maxFrame = 1;
-        } else if (this.input.right) {
-            this.animationState = 2; // Sliding animation state
-            this.maxFrame = 6;
+        } else if (!this.input.right && this.Xpos > 0) {
+            this.animationState = 0;    // Standing animation state
+            this.maxFrame = 1;
         } else {
-            this.animationState = 0;
-            this.maxFrame = 1;
+            this.animationState = 2;    // Running animation state
+            this.maxFrame = 6;
         }
     }
 }

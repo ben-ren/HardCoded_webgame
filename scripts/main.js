@@ -16,7 +16,7 @@ const physicsObjects = [];
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(animations, 0, 400, 3, 15, 30, 42);
+const player = new Player(animations, 0, 400, 3, gamespeed, 30, 42, gamespeed);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
     6, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 200
@@ -34,7 +34,7 @@ function animate(){
     if(gameFrame % staggerFrames === 0){
         ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
         background.LoadLayers(ctx, gamespeed);
-        player.update(ctx, CANVAS_WIDTH, 200);
+        player.update(ctx, CANVAS_WIDTH, 200, gamespeed);
         dragonflySpawner.update(ctx, 90);
         tankSpawner.update(ctx, 30);
         //loops through stored explosions as they happen.
