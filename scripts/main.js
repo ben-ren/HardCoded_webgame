@@ -78,6 +78,8 @@ function collisionLogic(index1, index2){
         //splice rocket and collision target
         obj1.destroyed = true;
         obj2.destroyed = true;
+        createExplosion(obj2.Xpos, obj2.Ypos, 50);
+        console.log(explosions);
     }
     //console.log(`Collision detected between ${obj1.colliderFlag} and ${obj2.colliderFlag}`);
 }
@@ -109,13 +111,9 @@ function removeDestroyedObjects() {
     }
 }
 
-window.addEventListener('click', (e) => {
-    createAnimation(e.x, e.y, 50);
-})
-
-function createAnimation(x, y, size){
-    const xPos = (x - canvasPosition.left) - size/2
-    const yPos = (y - canvasPosition.top) - size/2
+function createExplosion(x, y, size){
+    const xPos = x - size/2;
+    const yPos = y - size/2;
     explosions.push(new Explosion(xPos, yPos));
 }
 
