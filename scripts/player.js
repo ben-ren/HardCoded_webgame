@@ -16,7 +16,7 @@ class Player extends Collider{
         this.onLadder = false;
         this.shoot = false;
         this.inAir = false;
-        this.jumpForce = this.speed;
+        this.jumpForce = this.speed - this.speed/3;
         this.jumpHeight = 15;
         this.timer = this.jumpHeight;
         this.groundHeightPosition = 420;
@@ -43,6 +43,7 @@ class Player extends Collider{
         }
         if(this.Ypos >= this.groundHeightPosition){
             this.timer = this.jumpHeight;
+            this.inAir = false;
         }
         if(!this.input.up){
             this.timer = 0;

@@ -22,7 +22,7 @@ const dragonflySpawner = new EntitySpawner(
     6, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 200
 );
 const tankSpawner = new EntitySpawner(
-    3, [900, 2000], [450,450], Tank, animations, 0, 0, .4, 2, 520, 246
+    3, [900, 2000], [450,450], Tank, animations, 0, 0, .3, 2, 520, 246
 );
 
 //Store all objects that inherit from Collider into physicsObject array
