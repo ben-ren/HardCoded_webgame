@@ -8,9 +8,12 @@ let canvasPosition = canvas.getBoundingClientRect();
 
 let gameFrame = 0;
 let gamespeed = 20;
-const staggerFrames = 5;
 let kills = 0;
 let lives = 5;
+const staggerFrames = 5;
+const timeLimit = 40;
+let timer = timeLimit;
+let startTimer = false;
 
 //objects
 const animations = new AnimationsList();
@@ -18,7 +21,7 @@ const physicsObjects = [];
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(animations, 0, 400, 3, gamespeed, 30, 42, gamespeed);
+const player = new Player(animations, 0, 400, 3, gamespeed, 30, 42);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
     6, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, gamespeed/4, 333, 200
@@ -37,7 +40,7 @@ function animate(){
     if(gameFrame % staggerFrames === 0){
         ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
         background.LoadLayers(ctx, gamespeed);
-        player.update(ctx, CANVAS_WIDTH, 200, gamespeed);
+        player.update(ctx, CANVAS_WIDTH, 200, startTimer);
         dragonflySpawner.update(ctx, 90);
         tankSpawner.update(ctx, 30);
         //loops through stored explosions as they happen.
@@ -59,7 +62,7 @@ function animate(){
         }
 
         UI.update(ctx, kills, lives, CANVAS_WIDTH);   //update user interface
-
+        HurtTimer();
         //remove destroyed objects
         removeDestroyedObjects();
     }
@@ -73,10 +76,13 @@ function collisionLogic(index1, index2){
     const obj1 = physicsObjects[index1];
     const obj2 = physicsObjects[index2];
 
-    if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "rocket")){
+    //on collision start timer if timer isn't 0 disable collision
+    //add damage frames and animation
+    if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "rocket") && timer >= timeLimit){
         console.log("player hit");
         //remove player life
         lives--;
+        startTimer = true;
     }
     if(obj2.colliderFlag === "rocket" && (
         obj1.colliderFlag === "tank" || obj1.colliderFlag === "dragonfly"
@@ -122,6 +128,16 @@ function createExplosion(x, y, size){
     const xPos = x - size/2;
     const yPos = y - size/2;
     explosions.push(new Explosion(xPos, yPos));
+}
+
+function HurtTimer(){
+    if(startTimer){
+        timer--;
+    }
+    if(timer < 0){
+        startTimer = false;
+        timer = timeLimit;
+    }
 }
 
 // May need to create load function if hosting on a web sever

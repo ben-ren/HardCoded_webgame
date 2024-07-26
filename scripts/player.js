@@ -3,7 +3,7 @@ class Player extends Collider{
     rockets = [];
     shiftPressed = false;
     
-    constructor(animations, x, y, scale, speed, collider_width, collider_height, gamespeed){
+    constructor(animations, x, y, scale, speed, collider_width, collider_height){
         const URL = 'sprites/Character_SpriteSheet_Reallign.png';
         const animationArray = animations.animationList.player;
         super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "player");
@@ -11,7 +11,6 @@ class Player extends Collider{
         this.spriteWidth = 42;
         this.spriteHeight = 42;
         this.maxFrame = 6;
-        this.gamespeed = gamespeed;
 
         this.onLadder = false;
         this.shoot = false;
@@ -24,14 +23,18 @@ class Player extends Collider{
         this.frameInterval = 200; // Interval in milliseconds for player
     }
 
-    update(ctx, range, deltaTime, gamespeed){
+    update(ctx, range, deltaTime, hurt){
         this.input.update();
         this.movement(range-100);
-        this.AnimationHandler();
+        if(hurt){
+            this.animationState = 7;    // Hurt animation state
+            this.maxFrame = 2;
+        }else{
+            this.AnimationHandler();
+        }
         super.update(ctx, deltaTime);
         this.updateRocketStates(range);
         this.shootRockets();
-        this.gamespeed = gamespeed;
     }
 
     gravity(){
@@ -60,7 +63,7 @@ class Player extends Collider{
             this.Xpos += this.speed;
         }else{
             //match backwards speed to pathway image scrollspeed (0.6 * gamespeed)
-            this.Xpos -= 0.6 * this.gamespeed;
+            this.Xpos -= 0.6 * this.speed;
         }
         if(this.Xpos < 0){
             this.Xpos = 0;
