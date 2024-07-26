@@ -21,7 +21,7 @@ class GameObject{
         this.frameY = 0;
         this.animationState = 0;
 
-        this.frameInterval = 10; // Interval in milliseconds
+        this.frameInterval = this.speed; // Interval in milliseconds
         this.frameTimer = 0;
         this.destroyed = false;
     }

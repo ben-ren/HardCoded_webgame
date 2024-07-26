@@ -9,6 +9,8 @@ let canvasPosition = canvas.getBoundingClientRect();
 let gameFrame = 0;
 let gamespeed = 20;
 const staggerFrames = 5;
+let kills = 0;
+let lives = 5;
 
 //objects
 const animations = new AnimationsList();
@@ -19,11 +21,12 @@ const explosions = [];
 const player = new Player(animations, 0, 400, 3, gamespeed, 30, 42, gamespeed);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    6, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, 2.5, 333, 200
+    6, [200, 1000], [100, 280], Dragonfly, animations, 0, 0, .3, gamespeed/4, 333, 200
 );
 const tankSpawner = new EntitySpawner(
-    3, [900, 2000], [450,450], Tank, animations, 0, 0, .3, 2, 520, 246
+    3, [900, 2000], [480,480], Tank, animations, 0, 0, .3, gamespeed/2, 520, 246
 );
+const UI = new UserInterface(kills, lives);
 
 //Store all objects that inherit from Collider into physicsObject array
 physicsObjects.push(player);
@@ -55,6 +58,8 @@ function animate(){
             }
         }
 
+        UI.update(ctx, kills, lives, CANVAS_WIDTH);   //update user interface
+
         //remove destroyed objects
         removeDestroyedObjects();
     }
@@ -70,16 +75,18 @@ function collisionLogic(index1, index2){
 
     if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "rocket")){
         console.log("player hit");
+        //remove player life
+        lives--;
     }
     if(obj2.colliderFlag === "rocket" && (
         obj1.colliderFlag === "tank" || obj1.colliderFlag === "dragonfly"
     )){
-        console.log(`destroy ${obj2.colliderFlag} & ${obj1.colliderFlag}`);
-        //splice rocket and collision target
+        //console.log(`destroy ${obj2.colliderFlag} & ${obj1.colliderFlag}`);
         obj1.destroyed = true;
         obj2.destroyed = true;
         createExplosion(obj2.Xpos, obj2.Ypos, 50);
-        console.log(explosions);
+        //add to player kills
+        kills++;
     }
     //console.log(`Collision detected between ${obj1.colliderFlag} and ${obj2.colliderFlag}`);
 }
