@@ -5,7 +5,8 @@ class EntitySpawner{
         this.enemiesArray = [];
         this.xRange = xRange;
         this.yRange = yRange;
-        for(let i=0; i<enemyCount; i++){
+        this.enemyCount = enemyCount
+        for(let i=0; i<this.enemyCount; i++){
             this.addNewEntity();
         }
     }
@@ -21,7 +22,6 @@ class EntitySpawner{
         entity.Xpos = x;
         entity.Ypos = y;
         this.enemiesArray.push(entity);
-
     }
 
     update(ctx, deltaTime){
