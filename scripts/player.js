@@ -125,4 +125,17 @@ class Player extends Collider{
             this.maxFrame = 6;
         }
     }
+
+    //draws a static player hurt animation for freeze frame
+    drawHurt(ctx){
+        this.frameX = 8;
+        this.frameY = 0;
+        ctx.drawImage(
+            this.objectImage, this.frameX * this.spriteWidth, 
+            this.frameY * this.spriteHeight, this.spriteWidth, 
+            this.spriteHeight, 
+            this.Xpos, this.Ypos, 
+            this.spriteWidth*this.scale, this.spriteHeight*this.scale
+        );
+    }
 }

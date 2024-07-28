@@ -14,6 +14,7 @@ const staggerFrames = 5;
 const timeLimit = 40;
 let timer = timeLimit;
 let startTimer = false;
+let gameOver = false;
 
 //objects
 const animations = new AnimationsList();
@@ -34,7 +35,7 @@ const UI = new UserInterface(kills, lives);
 //Store all objects that inherit from Collider into physicsObject array
 physicsObjects.push(player);
 dragonflySpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
-tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
+tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));    
 
 function animate(){
     if(gameFrame % staggerFrames === 0){
@@ -60,7 +61,6 @@ function animate(){
                 }
             }
         }
-
         UI.update(ctx, kills, lives, CANVAS_WIDTH);   //update user interface
         HurtTimer();
         //remove destroyed objects
@@ -68,7 +68,22 @@ function animate(){
     }
 
     gameFrame++;
-    requestAnimationFrame(animate);
+
+    if(lives <= 0){
+        gameOver = true;
+    }
+    
+
+    if(!gameOver){
+        requestAnimationFrame(animate);
+    }else{
+        ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        background.LoadLayers(ctx, gamespeed);
+        dragonflySpawner.update(ctx, 90);
+        tankSpawner.update(ctx, 30);
+        player.drawHurt(ctx);
+        UI.endGameCard(ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
 }
 
 // Handle collision logic here
@@ -151,6 +166,6 @@ window.addEventListener('load', function(){
         gamespeed = e.target.value;
         showGameSpeed.innerHTML = e.target.value;
     });
-
+    
     animate();  //runs animation
 });
