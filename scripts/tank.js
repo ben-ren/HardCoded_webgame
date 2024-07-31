@@ -10,10 +10,11 @@ class Tank extends Collider{
         
     }
 
-    update(ctx, deltaTime){
+    update(ctx, deltaTime, gamespeed){
         this.Xpos -= this.speed;
+        this.gamespeed = gamespeed;
         super.update(ctx, deltaTime);
-        this.AnimationHandler();
+        this.AnimationHandler(true, false);
     }
 
     draw(ctx, x, y, scaleX, scaleY){
@@ -30,29 +31,27 @@ class Tank extends Collider{
     }
 
     //Determine's which tank animations are being run
-    AnimationHandler(){
-        var drive = true;
-        var shoot = false;
+    AnimationHandler(drive, shoot){
         let state = (drive ? 2 : 0) + (shoot ? 1 : 0);
 
         switch(state){
             case 0:
-                console.log("nothing");
+                //console.log("nothing");
                 this.animationState = 0;
                 this.maxFrame = 1;
                 break;
             case 1:
-                console.log("shoot");
+                //console.log("shoot");
                 this.animationState = 1;
                 this.maxFrame = 4;
                 break;
             case 2:
-                console.log("drive");
+                //console.log("drive");
                 this.animationState = 2;
                 this.maxFrame = 2;
                 break;
             case 3:
-                console.log("run and gun");
+                //console.log("run and gun");
                 this.animationState = 3;
                 this.maxFrame = 4;
                 break; 

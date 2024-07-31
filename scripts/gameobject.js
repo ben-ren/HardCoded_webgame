@@ -10,7 +10,8 @@ class GameObject{
         this.Xpos = x;
         this.Ypos = y;
         this.scale = scale
-        this.speed = speed;
+        this.gamespeed = speed;
+        this.speed = this.gamespeed;
 
         this.animationArray = animationArray;
         this.spriteWidth = 100;
@@ -27,6 +28,7 @@ class GameObject{
     }
 
     update(ctx, deltaTime){
+        this.speed = this.gamespeed;
         if(this.destroyed) return;
         
         this.FrameStateAnimator(deltaTime);

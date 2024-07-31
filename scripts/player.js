@@ -15,7 +15,7 @@ class Player extends Collider{
         this.onLadder = false;
         this.shoot = false;
         this.inAir = false;
-        this.jumpForce = this.speed - this.speed/3;
+        this.jumpForce = this.speed - this.speed/8;
         this.jumpHeight = 15;
         this.timer = this.jumpHeight;
         this.groundHeightPosition = 420;
@@ -23,9 +23,9 @@ class Player extends Collider{
         this.frameInterval = 200; // Interval in milliseconds for player
     }
 
-    update(ctx, range, deltaTime, hurt){
+    update(ctx, range, deltaTime, gamespeed, hurt){
         this.input.update();
-        this.movement(range-100);
+        this.movement(range-100, gamespeed);
         if(hurt){
             this.animationState = 7;    // Hurt animation state
             this.maxFrame = 2;
@@ -38,7 +38,7 @@ class Player extends Collider{
     }
 
     gravity(){
-        console.log(this.timer);
+        //console.log(this.timer);
         if(this.Ypos < this.groundHeightPosition && this.timer === 0){
             this.Ypos+= (9.8 + this.timer);
         }else{
@@ -53,7 +53,7 @@ class Player extends Collider{
         }
     }
 
-    movement(limit){
+    movement(limit, gamespeed){
         this.gravity();
         if(this.input.up && this.timer > 0){
             this.jump();
@@ -63,7 +63,7 @@ class Player extends Collider{
             this.Xpos += this.speed;
         }else{
             //match backwards speed to pathway image scrollspeed (0.6 * gamespeed)
-            this.Xpos -= 0.6 * this.speed;
+            this.Xpos -= 0.6 * gamespeed;
         }
         if(this.Xpos < 0){
             this.Xpos = 0;

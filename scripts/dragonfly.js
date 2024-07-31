@@ -9,10 +9,11 @@ class Dragonfly extends Collider{
         this.maxFrame = 4;
     }
 
-    update(ctx, deltaTime){
+    update(ctx, deltaTime, gamespeed){
         this.Xpos += Math.random() * 5 - (this.speed);
         this.Ypos += Math.random() * 3 - 1.5;
         this.move();
+        this.gamespeed = gamespeed;
         super.update(ctx, deltaTime);
     }
 

@@ -24,9 +24,9 @@ class EntitySpawner{
         this.enemiesArray.push(entity);
     }
 
-    update(ctx, deltaTime){
+    update(ctx, deltaTime, gamespeed){
         this.enemiesArray.forEach(entity => {
-            entity.update(ctx, deltaTime);
+            entity.update(ctx, deltaTime, gamespeed);
         });
     }
 }

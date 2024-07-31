@@ -7,7 +7,7 @@ const CANVAS_HEIGHT = canvas.height = 600;
 let canvasPosition = canvas.getBoundingClientRect();
 
 let gameFrame = 0;
-let gamespeed = 20;
+let gamespeed = 10;
 let kills = 0;
 let lives = 5;
 const staggerFrames = 5;
@@ -24,17 +24,17 @@ const explosions = [];
 const player = new Player(animations, 0, 400, 3, gamespeed, 30, 42);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    5, [1000, 1800], [100, 280], Dragonfly, animations, 0, 0, .3, gamespeed/4, 333, 200
+    5, [CANVAS_WIDTH, 1800], [100, 280], Dragonfly, animations, 0, 0, .3, gamespeed/4, 333, 200
 );
 const tankSpawner = new EntitySpawner(
-    3, [900, 2000], [480,480], Tank, animations, 0, 0, .3, gamespeed/2, 520, 246
+    3, [CANVAS_WIDTH, 2000], [480,480], Tank, animations, 0, 0, .3, gamespeed/2, 520, 246
 );
 const UI = new UserInterface(kills, lives);
 
 //Store all objects that inherit from Collider into physicsObject array
 physicsObjects.push(player);
 dragonflySpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
-tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));    
+tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
 
 /**
  * Animate's the scene
@@ -50,8 +50,8 @@ function animate(){
     }else{
         ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
         background.LoadLayers(ctx, gamespeed);
-        dragonflySpawner.update(ctx, 90);
-        tankSpawner.update(ctx, 30);
+        dragonflySpawner.update(ctx, 90, gamespeed/2);
+        tankSpawner.update(ctx, 30, gamespeed/2);
         player.drawHurt(ctx);
         UI.endGameCard(ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
@@ -63,9 +63,9 @@ function animate(){
 function renderScene(){
     ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
     background.LoadLayers(ctx, gamespeed);
-    player.update(ctx, CANVAS_WIDTH, 200, startTimer);
-    dragonflySpawner.update(ctx, 90);
-    tankSpawner.update(ctx, 30);
+    player.update(ctx, CANVAS_WIDTH, 200, gamespeed, startTimer);
+    dragonflySpawner.update(ctx, 90, gamespeed/2);
+    tankSpawner.update(ctx, 30, gamespeed/2);
     //loops through stored explosions as they happen.
     for(let i = 0; i< explosions.length; i++){
         explosions[i].update(ctx, 20);
@@ -86,7 +86,7 @@ function renderScene(){
 
     HandleEnemies();
 
-    UI.update(ctx, kills, lives, CANVAS_WIDTH);   //update user interface
+    UI.update(ctx, kills, lives, CANVAS_WIDTH, CANVAS_HEIGHT, gamespeed);   //update user interface
     HurtTimer();
     //remove destroyed objects
     removeDestroyedObjects();
@@ -159,6 +159,7 @@ function collisionLogic(index1, index2){
         createExplosion(obj2.Xpos, obj2.Ypos, 50);
         //add to player kills
         kills++;
+        gamespeed+=0.1;
     }
     //console.log(`Collision detected between ${obj1.colliderFlag} and ${obj2.colliderFlag}`);
 }
@@ -227,6 +228,5 @@ window.addEventListener('load', function(){ // May need to create load function 
         gamespeed = e.target.value;
         showGameSpeed.innerHTML = e.target.value;
     });
-    
     animate();  //runs animation
 });
