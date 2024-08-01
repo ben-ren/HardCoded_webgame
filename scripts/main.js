@@ -14,6 +14,9 @@ const staggerFrames = 5;
 const timeLimit = 40;
 let timer = timeLimit;
 let startTimer = false;
+let isPaused = false;
+let gameOver = false;
+let animateFrameID;
 
 //objects
 const animations = new AnimationsList();
@@ -37,24 +40,43 @@ dragonflySpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
 tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
 
 /**
+ * TODO
+ * ====
+ * Tank projectile shoot
+ * Tank projectile collision logic
+ * Tank firing animation trigger
+ * Player hair animation
+ */
+
+/**
  * Animate's the scene
  */ 
 function animate(){
+    if(isPaused) return;
+
     if(gameFrame % staggerFrames === 0){
         renderScene();
     }
     gameFrame++;
-    
+
     if(!(lives <= 0)){
-        requestAnimationFrame(animate);
+        animationFrameID = requestAnimationFrame(animate);
     }else{
-        ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        background.LoadLayers(ctx, gamespeed);
-        dragonflySpawner.update(ctx, 90, gamespeed/2);
-        tankSpawner.update(ctx, 30, gamespeed/2);
-        player.drawHurt(ctx);
-        UI.endGameCard(ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
+        gameOver = true; 
     }
+
+    if(gameOver){
+        gameOverScreen();   
+    }
+}
+
+function gameOverScreen(){
+    ctx.clearRect(0,0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    background.LoadLayers(ctx, 0);
+    dragonflySpawner.update(ctx, 0, 0);
+    tankSpawner.update(ctx, 0, 0);
+    player.drawHurt(ctx);
+    UI.endGameCard(ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 /**
@@ -215,6 +237,45 @@ function HurtTimer(){
     }
 }
 
+function togglePauseResume() {
+    isPaused = !isPaused;
+    const pauseResumeButton = document.getElementById('pauseResumeButton');
+    pauseResumeButton.textContent = isPaused ? 'Resume' : 'Pause';
+  
+    if (!isPaused) {
+      requestAnimationFrame(animate);
+    }
+  }
+  
+  /**
+   * Reset's the game's state
+   */
+  function resetGame() {
+    // Reset game variables
+    gameFrame = 0;
+    kills = 0;
+    lives = 5;
+    gamespeed = 10;
+    timer = timeLimit;
+    startTimer = false;
+    gameOver = false;
+    physicsObjects.length = 0; // Clear the physicsObjects array
+    explosions.length = 0;     // Clear the explosions array
+  
+    // Reset player and spawners
+    player.reset();
+    dragonflySpawner.reset();
+    tankSpawner.reset();
+  
+    // Re-add player and enemies to physicsObjects
+    physicsObjects.push(player);
+    dragonflySpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
+    tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
+  
+    // Start the animation again
+    animate();
+  }
+
 /**
  * load's the webpage content
  */
@@ -228,5 +289,14 @@ window.addEventListener('load', function(){ // May need to create load function 
         gamespeed = e.target.value;
         showGameSpeed.innerHTML = e.target.value;
     });
+
+    // Pause/Resume button event listener
+    const pauseResumeButton = document.getElementById('pauseResumeButton');
+    pauseResumeButton.addEventListener('click', togglePauseResume);
+
+    // Pause/Resume button event listener
+    const resetButton = document.getElementById('resetButton');
+    resetButton.addEventListener('click', resetGame);
+
     animate();  //runs animation
 });

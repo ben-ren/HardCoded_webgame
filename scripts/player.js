@@ -12,6 +12,9 @@ class Player extends Collider{
         this.spriteHeight = 42;
         this.maxFrame = 6;
 
+        this.initialX = x;
+        this.initialY = y;
+
         this.onLadder = false;
         this.shoot = false;
         this.inAir = false;
@@ -124,6 +127,15 @@ class Player extends Collider{
             this.animationState = 2;    // Running animation state
             this.maxFrame = 6;
         }
+    }
+
+    reset(){
+        this.Xpos = this.initialX;
+        this.Ypos = this.initialY;
+        this.rockets = [];
+        this.shoot = false;
+        this.inAir = false;
+        this.timer = this.jumpHeight;
     }
 
     //draws a static player hurt animation for freeze frame

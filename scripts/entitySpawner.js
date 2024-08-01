@@ -24,6 +24,13 @@ class EntitySpawner{
         this.enemiesArray.push(entity);
     }
 
+    reset(){
+        this.enemiesArray.length = 0; // Clear enemies array
+        for (let i = 0; i < this.enemyCount; i++) {
+            this.addNewEntity();
+        }
+    }
+
     update(ctx, deltaTime, gamespeed){
         this.enemiesArray.forEach(entity => {
             entity.update(ctx, deltaTime, gamespeed);
