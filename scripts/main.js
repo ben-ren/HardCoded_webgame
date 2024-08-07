@@ -14,7 +14,7 @@ const staggerFrames = 5;
 const timeLimit = 40;
 let timer = timeLimit;
 let startTimer = false;
-let isPaused = false;
+let isPaused = true;
 let gameOver = false;
 let animateFrameID;
 
