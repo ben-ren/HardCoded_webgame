@@ -11,7 +11,7 @@ let gamespeed = 10;
 let kills = 0;
 let lives = 5;
 const staggerFrames = 5;
-const timeLimit = 40;
+const timeLimit = 60;
 let timer = timeLimit;
 let startTimer = false;
 let isPaused = true;
@@ -42,8 +42,6 @@ tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
 /**
  * TODO
  * ====
- * Tank projectile shoot
- * Tank projectile collision logic
  * Tank firing animation trigger
  * Player hair animation
  */
@@ -164,24 +162,56 @@ function collisionLogic(index1, index2){
     const obj1 = physicsObjects[index1];
     const obj2 = physicsObjects[index2];
 
-    //on collision start timer if timer isn't 0 disable collision
-    //add damage frames and animation
-    if(obj1.colliderFlag === "player" && !(obj2.colliderFlag === "rocket") && timer >= timeLimit){
-        console.log("player hit");
-        //remove player life
-        lives--;
+    // Avoid rocket-to-rocket collision
+    if (obj1.colliderFlag === "rocket" && obj2.colliderFlag === "rocket") {
+        return;
+    }
+
+    // Handle player collisions with rockets
+    if (obj1.colliderFlag === "player" && obj2.colliderFlag === "rocket" && obj2.owner === "enemy" && timer >= timeLimit) {
+        console.log("Player hit by enemy rocket");
+        lives--; // Decrease player life
+        obj2.destroyed = true; // Destroy the enemy rocket on impact
         startTimer = true;
     }
-    if(obj2.colliderFlag === "rocket" && (
-        obj1.colliderFlag === "tank" || obj1.colliderFlag === "dragonfly"
-    )){
-        //console.log(`destroy ${obj2.colliderFlag} & ${obj1.colliderFlag}`);
-        obj1.destroyed = true;
-        obj2.destroyed = true;
-        createExplosion(obj2.Xpos, obj2.Ypos, 50);
-        //add to player kills
-        kills++;
-        gamespeed+=0.1;
+
+    if (obj2.colliderFlag === "player" && obj1.colliderFlag === "rocket" && obj1.owner === "enemy" && timer >= timeLimit) {
+        console.log("Player hit by enemy rocket");
+        lives--; // Decrease player life
+        obj1.destroyed = true; // Destroy the enemy rocket on impact
+        startTimer = true;
+    }
+
+    // Handle collisions where player rockets hit tanks or dragonflies
+    if (obj1.colliderFlag === "rocket" && obj1.owner === "player" && (obj2.colliderFlag === "tank" || obj2.colliderFlag === "dragonfly")) {
+        console.log(`Destroyed ${obj2.colliderFlag}`);
+        obj1.destroyed = true; // Destroy the player rocket
+        obj2.destroyed = true; // Destroy the enemy target
+        createExplosion(obj2.Xpos, obj2.Ypos, 50); // Create explosion
+        kills++; // Increase player's kills
+        gamespeed += 0.1; // Increase game speed
+    }
+
+    if (obj2.colliderFlag === "rocket" && obj2.owner === "player" && (obj1.colliderFlag === "tank" || obj1.colliderFlag === "dragonfly")) {
+        console.log(`Destroyed ${obj1.colliderFlag}`);
+        obj2.destroyed = true; // Destroy the player rocket
+        obj1.destroyed = true; // Destroy the enemy target
+        createExplosion(obj1.Xpos, obj1.Ypos, 50); // Create explosion
+        kills++; // Increase player's kills
+        gamespeed += 0.1; // Increase game speed
+    }
+
+    // Handle direct collisions between player and enemies (not rockets)
+    if (obj1.colliderFlag === "player" && (obj2.colliderFlag === "tank" || obj2.colliderFlag === "dragonfly") && timer >= timeLimit) {
+        console.log("Player hit by enemy");
+        lives--; // Decrease player life
+        startTimer = true;
+    }
+
+    if (obj2.colliderFlag === "player" && (obj1.colliderFlag === "tank" || obj1.colliderFlag === "dragonfly") && timer >= timeLimit) {
+        console.log("Player hit by enemy");
+        lives--; // Decrease player life
+        startTimer = true;
     }
     //console.log(`Collision detected between ${obj1.colliderFlag} and ${obj2.colliderFlag}`);
 }

@@ -83,7 +83,7 @@ class Player extends Collider{
 
     updateRocketStates(range){
         for(let i=0; i<this.rockets.length; i++){
-            this.rockets[i].update(ctx, 20);
+            this.rockets[i].update(ctx, 20, 1);
             if(this.rockets[i].Xpos > range){
                 this.removeProjectile(this.rockets[i]);
                 this.rockets.splice(i, 1);
@@ -94,7 +94,7 @@ class Player extends Collider{
 
     shootRockets() {
         if (this.input.shift && !this.shiftPressed) {
-            let newRocket = new Projectile(animations, this.Xpos+(this.spriteWidth*2), this.Ypos + (this.spriteHeight), 1, 20, 50, 50);
+            let newRocket = new Projectile(animations, this.Xpos+(this.spriteWidth*2), this.Ypos + (this.spriteHeight), 1, 20, 50, 50, "player");
             this.rockets.push(newRocket);
             this.addProjectileToPhysicsObjects(newRocket);
         }
