@@ -276,6 +276,23 @@ function togglePauseResume() {
     animate();
   }
 
+  /**
+   * Load Main Menu 
+   */
+  function LoadMainMenu(){
+    const canvas = document.getElementById('canvas1');
+    const ctx = canvas.getContext('2d');
+
+    // Load and draw the default image
+    const defaultImage = new Image();
+    defaultImage.src = 'sprites/Character_SpriteSheet_Reallign.png'; // Path to your default image
+
+    defaultImage.onload = () => {
+        // Draw the image on the canvas
+        ctx.drawImage(defaultImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    };
+  }
+
 /**
  * load's the webpage content
  */
@@ -289,6 +306,7 @@ window.addEventListener('load', function(){ // May need to create load function 
         gamespeed = e.target.value;
         showGameSpeed.innerHTML = e.target.value;
     });
+    LoadMainMenu();
 
     // Pause/Resume button event listener
     const pauseResumeButton = document.getElementById('pauseResumeButton');
