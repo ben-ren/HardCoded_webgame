@@ -16,11 +16,12 @@ let timer = timeLimit;
 let startTimer = false;
 let isPaused = true;
 let gameOver = false;
-let animateFrameID;
+let animationFrameID;
 
 //objects
 const animations = new AnimationsList();
 const physicsObjects = [];
+const activeRockets = [];
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
@@ -42,7 +43,6 @@ tankSpawner.enemiesArray.forEach(entity => physicsObjects.push(entity));
 /**
  * TODO
  * ====
- * Tank firing animation trigger
  * Player hair animation
  */
 
@@ -86,6 +86,20 @@ function renderScene(){
     player.update(ctx, CANVAS_WIDTH, 200, gamespeed, startTimer);
     dragonflySpawner.update(ctx, 90, gamespeed/2);
     tankSpawner.update(ctx, 30, gamespeed/2);
+
+    // Update all rockets
+    for (let i = 0; i < activeRockets.length; i++) {
+        const rocket = activeRockets[i];
+        rocket.update(ctx, 20, -1);
+
+        // Remove rocket if it's out of bounds
+        if (rocket.Xpos < 0) {
+            rocket.destroyed = true; // Mark rocket as destroyed
+            activeRockets.splice(i, 1); // Remove from the array
+            i--; // Adjust the index
+        }
+    }
+
     //loops through stored explosions as they happen.
     for(let i = 0; i< explosions.length; i++){
         explosions[i].update(ctx, 20);

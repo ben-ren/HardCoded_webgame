@@ -22,7 +22,7 @@ class Tank extends Collider{
         this.FireRate();
         this.AnimationHandler(this.drive, this.shoot);
         this.Shoot();
-        this.updateRocketStates(ctx);
+        //this.updateRocketStates(ctx);
     }
 
     draw(ctx, x, y, scaleX, scaleY){
@@ -39,13 +39,14 @@ class Tank extends Collider{
     }
 
     /**
-     * Runs a timer to delay projectile firing.
+     * Runs a timer to control firing speed.
      */
     FireRate(){
-        if(this.timer > 0){
-            this.timer--;
-        }else{
+        if(this.timer <= 0){
             this.shoot = true;
+            this.timer = this.timeLimit;
+        }else{
+            this.timer--;
         }
     }
 
@@ -56,10 +57,10 @@ class Tank extends Collider{
         if (this.shoot) {
             const rocket = new Projectile(animations, this.Xpos, this.Ypos, 1, 15, 50, 50, "enemy", 0, 0);
             rocket.ownerObject = this;
-            this.rockets.push(rocket);
+            // Add rocket to global tankRockets array
+            activeRockets.push(rocket);
             this.addProjectileToPhysicsObjects(rocket);
             this.shoot = false;  // Reset shooting flag
-            this.timer = this.timeLimit;
         }
     }
 
