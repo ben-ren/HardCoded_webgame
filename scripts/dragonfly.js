@@ -1,8 +1,8 @@
 class Dragonfly extends Collider{
-    constructor(animations, x, y, scale, speed, collider_width, collider_height){
+    constructor(animations, x, y, scale, speed, collider_width, collider_height, collider_offset_X, collider_offset_Y){
         const URL = 'sprites/dragonfly_spritesheet.png';
         const animationArray = animations.animationList.dragonfly;
-        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "dragonfly");
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "dragonfly", collider_offset_X, collider_offset_Y);
 
         this.spriteWidth = 333;
         this.spriteHeight = 300;

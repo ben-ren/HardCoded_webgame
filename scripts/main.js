@@ -24,13 +24,13 @@ const physicsObjects = [];
 const explosions = [];
 
 //const gameobject = new GameObject('sprites/puff.png', animations.animationList.puff, 100, 100, 1, 0);
-const player = new Player(animations, 0, 400, 3, gamespeed, 30, 42);
+const player = new Player(animations, 0, 400, 3, gamespeed, 20, 30, 32, 36);
 const background = new Background(gamespeed);
 const dragonflySpawner = new EntitySpawner(
-    5, [CANVAS_WIDTH, 1800], [100, 280], Dragonfly, animations, 0, 0, .3, gamespeed/4, 333, 200
+    5, [CANVAS_WIDTH, 1800], [100, 280], Dragonfly, animations, 0, 0, .3, gamespeed/4, 333, 200, 0, 0
 );
 const tankSpawner = new EntitySpawner(
-    3, [CANVAS_WIDTH, 2000], [480,480], Tank, animations, 0, 0, .3, gamespeed/2, 520, 246
+    3, [CANVAS_WIDTH, 2000], [480,480], Tank, animations, 0, 0, .3, gamespeed/2, 520, 246, 0, 0
 );
 const UI = new UserInterface(kills, lives);
 
@@ -172,6 +172,7 @@ function collisionLogic(index1, index2){
         console.log("Player hit by enemy rocket");
         lives--; // Decrease player life
         obj2.destroyed = true; // Destroy the enemy rocket on impact
+        createExplosion(obj2.Xpos, obj2.Ypos, 50); // Create explosion
         startTimer = true;
     }
 
@@ -179,6 +180,7 @@ function collisionLogic(index1, index2){
         console.log("Player hit by enemy rocket");
         lives--; // Decrease player life
         obj1.destroyed = true; // Destroy the enemy rocket on impact
+        createExplosion(obj1.Xpos, obj1.Ypos, 50); // Create explosion
         startTimer = true;
     }
 

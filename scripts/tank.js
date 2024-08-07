@@ -1,8 +1,8 @@
 class Tank extends Collider{
-    constructor(animations, x, y, scale, speed, collider_width, collider_height){
+    constructor(animations, x, y, scale, speed, collider_width, collider_height, collider_offset_X, collider_offset_Y){
         const URL = 'sprites/Tank_spritesheet.png';
         const animationArray = animations.animationList.tank;
-        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "tank");
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "tank", collider_offset_X, collider_offset_Y);
         
         this.spriteWidth = 780;
         this.spriteHeight = 246;
@@ -22,7 +22,7 @@ class Tank extends Collider{
         this.FireRate();
         this.AnimationHandler(this.drive, this.shoot);
         this.Shoot();
-        this.updateRocketStates(ctx, gamespeed);
+        this.updateRocketStates(ctx);
     }
 
     draw(ctx, x, y, scaleX, scaleY){
@@ -54,8 +54,8 @@ class Tank extends Collider{
      */
     Shoot() {
         if (this.shoot) {
-            const y = this.Ypos + this.spriteHeight * this.scale / 2
-            const rocket = new Projectile(animations, this.Xpos, y, 1, 15, 25, 25, "enemy");
+            const rocket = new Projectile(animations, this.Xpos, this.Ypos, 1, 15, 50, 50, "enemy", 0, 0);
+            rocket.ownerObject = this;
             this.rockets.push(rocket);
             this.addProjectileToPhysicsObjects(rocket);
             this.shoot = false;  // Reset shooting flag
@@ -73,10 +73,10 @@ class Tank extends Collider{
     /**
      * Update the state of rockets.
      */
-    updateRocketStates(ctx, gamespeed) {
+    updateRocketStates(ctx) {
         for (let i = 0; i < this.rockets.length; i++) {
             this.rockets[i].update(ctx, 20, -1);
-            if (this.rockets[i].Xpos < -CANVAS_WIDTH * 0.1) { // Check if out of bounds
+            if (this.rockets[i].Xpos < 0) { // Check if out of bounds
                 this.removeProjectile(this.rockets[i]);
                 this.rockets.splice(i, 1);
                 i--;

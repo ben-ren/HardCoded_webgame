@@ -3,10 +3,10 @@ class Player extends Collider{
     rockets = [];
     shiftPressed = false;
     
-    constructor(animations, x, y, scale, speed, collider_width, collider_height){
+    constructor(animations, x, y, scale, speed, collider_width, collider_height, collider_offset_X, collider_offset_Y){
         const URL = 'sprites/Character_SpriteSheet_Reallign.png';
         const animationArray = animations.animationList.player;
-        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "player");
+        super(URL, animationArray, x, y, scale, speed, collider_width, collider_height, "player", collider_offset_X, collider_offset_Y);
 
         this.spriteWidth = 42;
         this.spriteHeight = 42;
@@ -36,7 +36,7 @@ class Player extends Collider{
             this.AnimationHandler();
         }
         super.update(ctx, deltaTime);
-        this.updateRocketStates(range);
+        this.updateRocketStates(ctx, range);
         this.shootRockets();
     }
 
@@ -81,7 +81,7 @@ class Player extends Collider{
         }
     }
 
-    updateRocketStates(range){
+    updateRocketStates(ctx, range){
         for(let i=0; i<this.rockets.length; i++){
             this.rockets[i].update(ctx, 20, 1);
             if(this.rockets[i].Xpos > range){
@@ -94,7 +94,7 @@ class Player extends Collider{
 
     shootRockets() {
         if (this.input.shift && !this.shiftPressed) {
-            let newRocket = new Projectile(animations, this.Xpos+(this.spriteWidth*2), this.Ypos + (this.spriteHeight), 1, 20, 50, 50, "player");
+            let newRocket = new Projectile(animations, this.Xpos+(this.spriteWidth*2), this.Ypos + (this.spriteHeight), 1, 20, 50, 50, "player", 0, 0);
             this.rockets.push(newRocket);
             this.addProjectileToPhysicsObjects(newRocket);
         }

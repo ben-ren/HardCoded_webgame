@@ -1,9 +1,11 @@
 class Collider extends GameObject{
-    constructor(URL, animationArray, x, y, scale, speed, width, height, colliderFlag){
+    constructor(URL, animationArray, x, y, scale, speed, width, height, colliderFlag, collider_offset_X, collider_offset_Y){
         super(URL, animationArray, x, y, scale, speed);
         this.w = width * scale;
         this.h = height * scale;
         this.colliderFlag = colliderFlag;
+        this.offset_X = collider_offset_X;
+        this.offset_Y = collider_offset_Y;
     }
 
     //parse in current object's position & dimensions
@@ -13,6 +15,10 @@ class Collider extends GameObject{
     }
 
     InCollider(col){
+        const newXpos = this.Xpos + this.offset_X;
+        const newXcol = col.Xpos + this.offset_X;
+        const newYpos = this.Ypos + this.offset_Y;
+        const newYcol = col.Ypos + this.offset_Y;
         // Check if one rectangle is to the left of the other
         if (this.Xpos + this.w < col.Xpos || col.Xpos + col.w < this.Xpos) {
             return false;
@@ -28,6 +34,6 @@ class Collider extends GameObject{
     // Draw bounding box for debugging
     DrawBox(ctx){
         ctx.strokeStyle = 'red';
-        ctx.strokeRect(this.Xpos, this.Ypos, this.w, this.h);
+        ctx.strokeRect(this.Xpos + this.offset_X, this.Ypos + this.offset_Y, this.w, this.h);
     }
 }
