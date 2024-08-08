@@ -9,7 +9,8 @@ class GameObject{
         };
         this.Xpos = x;
         this.Ypos = y;
-        this.scale = scale
+        this.scale = scale;
+        this.scaleX = 1;
         this.gamespeed = speed;
         this.speed = this.gamespeed;
 
@@ -57,11 +58,35 @@ class GameObject{
         sx, sy is the cutout position from top-right corner. 
         sw, sh is the height and width of the cutout.
     */
+    // draw(ctx, x, y, scaleX, scaleY){
+    //     ctx.drawImage(this.objectImage, this.frameX * this.spriteWidth, 
+    //     this.frameY * this.spriteHeight, this.spriteWidth, 
+    //     this.spriteHeight, 
+    //     x, y, 
+    //     this.spriteWidth*scaleX*this.scaleX, this.spriteHeight*scaleY);
+    // }
+
     draw(ctx, x, y, scaleX, scaleY){
-        ctx.drawImage(this.objectImage, this.frameX * this.spriteWidth, 
-        this.frameY * this.spriteHeight, this.spriteWidth, 
-        this.spriteHeight, 
-        x, y, 
-        this.spriteWidth*scaleX, this.spriteHeight*scaleY);
+        ctx.save(); // Save the current canvas state
+
+        // Flip the image horizontally if scaleX is -1
+        if (this.scaleX < 0) {
+            ctx.scale(-1, 1); // Flip horizontally
+            x = -x - this.spriteWidth * scaleX; // Adjust x position for flipping
+        }
+
+        ctx.drawImage(
+            this.objectImage,
+            this.frameX * this.spriteWidth,
+            this.frameY * this.spriteHeight,
+            this.spriteWidth,
+            this.spriteHeight,
+            x,
+            y,
+            this.spriteWidth * Math.abs(scaleX), // Use Math.abs to ensure positive width
+            this.spriteHeight * scaleY
+        );
+
+        ctx.restore(); // Restore the canvas state
     }
 }
