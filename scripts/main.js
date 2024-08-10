@@ -325,18 +325,31 @@ function togglePauseResume() {
   /**
    * Load Main Menu 
    */
-  function LoadMainMenu(){
+  function LoadTitleScreen(){
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
 
     // Load and draw the default image
     const defaultImage = new Image();
-    defaultImage.src = 'sprites/Character_SpriteSheet_Reallign.png'; // Path to your default image
+    defaultImage.src = 'images/skybox.png'; // Path to your default image
+
+    const sampleRocket = new Projectile(animations, CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 5, 0, 0, 0, "null", 0, 0);
 
     defaultImage.onload = () => {
         // Draw the image on the canvas
         ctx.drawImage(defaultImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "green";
+        ctx.lineWidth = 3;
+        ctx.font = "bold 120px Monaco";
+        ctx.fillText("RocketScroller", CANVAS_WIDTH/5, CANVAS_HEIGHT/3);
+        ctx.strokeText("RocketScroller", CANVAS_WIDTH/5, CANVAS_HEIGHT/3);
     };
+    //wait to load rocket
+    sampleRocket.objectImage.onload = () => {
+        sampleRocket.draw(ctx, CANVAS_WIDTH/2 - 100, CANVAS_HEIGHT/2 - 100, 5, 5);
+    };
+    
   }
 
 /**
@@ -352,7 +365,7 @@ window.addEventListener('load', function(){ // May need to create load function 
         gamespeed = e.target.value;
         showGameSpeed.innerHTML = e.target.value;
     });
-    LoadMainMenu();
+    LoadTitleScreen();
 
     // Pause/Resume button event listener
     const pauseResumeButton = document.getElementById('pauseResumeButton');

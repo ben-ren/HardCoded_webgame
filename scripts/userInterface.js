@@ -8,13 +8,19 @@ class UserInterface{
     update(ctx, kills, lives, CANVAS_WIDTH, CANVAS_HEIGHT, gamespeed){
         this.kills = kills;
         this.lives = lives
-        ctx.font = "30px Arial";
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.font = "50px Arial";
         ctx.fillText("lives: " + lives, CANVAS_WIDTH*0.05, 40);
-        let x = CANVAS_WIDTH - (CANVAS_WIDTH*0.1)
+        ctx.strokeText("lives: " + lives, CANVAS_WIDTH*0.05, 40);
+        let x = CANVAS_WIDTH - (CANVAS_WIDTH*0.2)
         ctx.fillText("kills: " + kills, x, 40);
-        let y = CANVAS_HEIGHT - (CANVAS_HEIGHT*0.1)
-        let x2 = CANVAS_WIDTH - (CANVAS_WIDTH*0.2)
+        ctx.strokeText("kills: " + kills, x, 40);
+        let y = CANVAS_HEIGHT - (CANVAS_HEIGHT*0.02)
+        let x2 = CANVAS_WIDTH - (CANVAS_WIDTH*0.3)
         ctx.fillText("gamespeed: " + gamespeed, x2, y);
+        ctx.strokeText("gamespeed: " + gamespeed, x2, y);
     }
 
     draw(ctx, x, y, width, height){

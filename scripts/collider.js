@@ -11,20 +11,20 @@ class Collider extends GameObject{
     //parse in current object's position & dimensions
     update(ctx, speed){
         super.update(ctx, speed);
-        this.DrawBox(ctx);
+        //this.DrawBox(ctx);
     }
 
     InCollider(col){
         const newXpos = this.Xpos + this.offset_X;
-        const newXcol = col.Xpos + this.offset_X;
+        const newXcol = col.Xpos + col.offset_X;
         const newYpos = this.Ypos + this.offset_Y;
-        const newYcol = col.Ypos + this.offset_Y;
+        const newYcol = col.Ypos + col.offset_Y;
         // Check if one rectangle is to the left of the other
-        if (this.Xpos + this.w < col.Xpos || col.Xpos + col.w < this.Xpos) {
+        if (newXpos + this.w < newXcol || newXcol + col.w < newXpos) {
             return false;
         }
         // Check if one rectangle is above the other
-        if (this.Ypos + this.h < col.Ypos || col.Ypos + col.h < this.Ypos) {
+        if (newYpos + this.h < newYcol || newYcol + col.h < newYpos) {
             return false;
         }
         // If neither of the above, the rectangles must be intersecting
